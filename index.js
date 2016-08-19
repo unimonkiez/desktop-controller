@@ -8,7 +8,7 @@ SerialPort.list(function (err, ports) {
   });
 });
 
-const port = new SerialPort('/dev/cu.Bluetooth-Incoming-Port', {
+const port = new SerialPort('/dev/ttyAMA0', {
   'baudRate': 57600
 });
 
@@ -20,6 +20,10 @@ port.on('open', () => {
     console.log('message written');
   });
 });
+
+port.on('data', e => {
+  console.log('got data:', e);
+})
 
 // open errors will be emitted as an error event
 port.on('error', err => {
