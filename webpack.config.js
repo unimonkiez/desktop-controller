@@ -82,6 +82,7 @@ module.exports = {
         test: /\.font\.(js|json)$/,
         loader: isWebpackDevServer ?
         'style!css!fontgen' :
+        // eslint-disable-next-line
         ExtractTextPlugin.extract('style', 'replace?flags=g&regex=\/font\/&sub=\.\/font\/!css!fontgen?fileName=./font/[hash][ext]')
       }, {
         test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
