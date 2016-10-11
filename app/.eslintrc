@@ -1,0 +1,18 @@
+{
+  "env": {
+    "node": false,
+    "browser": true
+  },
+  "ecmaFeatures": {
+    "modules": true
+  },
+  "globals": {
+    "__DEV__": false,
+    "__PROD__": false,
+    "__DEVSERVER__": false
+  },
+  "rules": {
+    "strict": [2, "never"],
+    "no-console": 1,
+  }
+}
