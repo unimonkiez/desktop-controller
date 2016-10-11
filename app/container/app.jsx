@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 
 export default class App extends Component {
-  static handlePowerPress() {
+  static handlePowerPress(e) {
+    e.preventDefault();
     if (__DEVSERVER__) {
       console.log('power press!');
     } else {
@@ -10,7 +11,8 @@ export default class App extends Component {
       });
     }
   }
-  static handlePowerRelease() {
+  static handlePowerRelease(e) {
+    e.preventDefault();
     if (__DEVSERVER__) {
       console.log('power release!');
     } else {
