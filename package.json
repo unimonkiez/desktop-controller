@@ -2,9 +2,7 @@
   "name": "desktop-controller",
   "version": "0.0.1-1",
   "description": "",
-  "bin": {
-    "desktop-controller": "./index.js"
-  },
+  "bin": "./index.js",
   "main": "index.js",
   "scripts": {
     "prepublish": "npm run build:prod",
