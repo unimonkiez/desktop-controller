@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "postinstall": "npm run build:prod",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint --ext .js,.jsx .",
+    "test": "npm run lint",
     "build": "webpack",
     "build:prod": "webpack -p",
     "start": "webpack-dev-server --port 8080 --host 0.0.0.0 --inline --hot  --progress --colors",
