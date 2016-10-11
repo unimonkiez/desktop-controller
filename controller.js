@@ -1,8 +1,8 @@
-const AUTO_RELEASE = 5000;
-const POWER_MODES = {
-  PRESSED: 0,
-  NOT_PRESSED: 1
-};
+const { AUTO_RELEASE, POWER_MODES } = require('./constant.js');
+
+// const args = process.argv.slice(2);
+// const isMock = args.indexOf('-m') !== -1;
+
 module.exports = {
   _powerMode: POWER_MODES.NOT_PRESSED,
   _releasePower() {
