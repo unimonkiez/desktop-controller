@@ -4,12 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node ./index.js"
   },
   "author": "unimonkiez",
   "license": "ISC",
   "dependencies": {
-    "serialport": "^4.0.1"
+    "express": "^4.14.0"
   },
   "devDependencies": {
     "eslint": "^3.3.1"
