@@ -12,6 +12,7 @@
     "__DEVSERVER__": false
   },
   "rules": {
+    "import/no-extraneous-dependencies": [2, {"devDependencies": true}],
     "strict": [2, "never"],
     "no-console": 1,
   }
