@@ -16,20 +16,21 @@ if (isMock) {
   // eslint-disable-next-line
   const gpio = require('rpi-gpio');
 
-  gpio.setup(17, gpio.DIR_OUT, () => {
+  gpio.setup(11, gpio.DIR_OUT, setupErr => {
+    if (setupErr) throw setupErr;
     process.on('SIGINT', () => {
       gpio.destroy(() => {
         console.log('All pins unexported');
       });
     });
     pressPower = () => {
-      gpio.write(17, true, err => {
+      gpio.write(11, true, err => {
         if (err) throw err;
         console.log('pressing power!');
       });
     };
     releasePower = () => {
-      gpio.write(17, false, err => {
+      gpio.write(11, false, err => {
         if (err) throw err;
         console.log('releasing power!');
       });
