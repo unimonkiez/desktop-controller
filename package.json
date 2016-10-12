@@ -1,6 +1,6 @@
 {
   "name": "desktop-controller",
-  "version": "0.0.1-4",
+  "version": "0.0.1-5",
   "description": "Desktop controller",
   "main": "index.js",
   "bin": "./index.js",
