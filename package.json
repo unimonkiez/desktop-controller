@@ -32,6 +32,9 @@
     "express": "^4.14.0",
     "path": "^0.12.7"
   },
+  "optionalDependencies": {
+    "node-gpio": "^0.1.1"
+  },
   "devDependencies": {
     "babel-core": "^6.17.0",
     "babel-eslint": "^7.0.0",
