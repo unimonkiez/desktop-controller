@@ -3,23 +3,15 @@ import React, { Component } from 'react';
 export default class App extends Component {
   static handlePowerPress(e) {
     e.preventDefault();
-    if (__DEVSERVER__) {
-      console.log('power press!');
-    } else {
-      fetch('/power', {
-        method: 'POST'
-      });
-    }
+    fetch('/power', {
+      method: 'POST'
+    });
   }
   static handlePowerRelease(e) {
     e.preventDefault();
-    if (__DEVSERVER__) {
-      console.log('power release!');
-    } else {
-      fetch('/power', {
-        method: 'DELETE'
-      });
-    }
+    fetch('/power', {
+      method: 'DELETE'
+    });
   }
   render() {
     return (

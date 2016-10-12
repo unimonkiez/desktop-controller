@@ -10,8 +10,7 @@
     "test": "npm run lint",
     "build": "webpack",
     "build:prod": "webpack -p",
-    "start": "webpack-dev-server --port 8080 --host 0.0.0.0 --inline --hot  --progress --colors",
-    "start:mock": "npm run build && npm run start:prod -m",
+    "start": "npm run start:prod -- -m -w",
     "start:prod": "node ./index.js"
   },
   "author": "unimonkiez",
@@ -63,7 +62,8 @@
     "style-loader": "^0.13.1",
     "url-loader": "^0.5.7",
     "webpack": "^1.13.2",
-    "webpack-dev-server": "^1.16.2",
+    "webpack-dev-middleware": "^1.8.4",
+    "webpack-hot-middleware": "^2.13.0",
     "whatwg-fetch": "^1.0.0"
   }
 }

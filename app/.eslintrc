@@ -8,11 +8,9 @@
   },
   "globals": {
     "__DEV__": false,
-    "__PROD__": false,
-    "__DEVSERVER__": false
+    "__PROD__": false
   },
   "rules": {
-    "import/no-extraneous-dependencies": [2, {"devDependencies": true}],
     "strict": [2, "never"],
     "no-console": 1,
   }
