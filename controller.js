@@ -14,25 +14,27 @@ if (isMock) {
 } else {
   // Optional dependency, won't be available on any machine other than rpi
   // eslint-disable-next-line
-  const gpio = require('node-gpio');
+  const gpio = require('rpi-gpio');
 
-  const { GPIO } = gpio;
-  const led = new GPIO('17');
-  led.open();
-  led.setMode(gpio.OUT);
-  process.on('SIGINT', () => {
-    led.close();
-    process.exit();
+  gpio.setup(17, gpio.DIR_OUT, () => {
+    process.on('SIGINT', () => {
+      gpio.destroy(() => {
+        console.log('All pins unexported');
+      });
+    });
+    pressPower = () => {
+      gpio.write(17, true, err => {
+        if (err) throw err;
+        console.log('pressing power!');
+      });
+    };
+    releasePower = () => {
+      gpio.write(17, false, err => {
+        if (err) throw err;
+        console.log('releasing power!');
+      });
+    };
   });
-
-  pressPower = () => {
-    console.log('pressing power!');
-    led.write(gpio.HIGH);
-  };
-  releasePower = () => {
-    console.log('releasing power!');
-    led.write(gpio.LOW);
-  };
 }
 
 module.exports = {

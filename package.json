@@ -33,7 +33,7 @@
     "path": "^0.12.7"
   },
   "optionalDependencies": {
-    "node-gpio": "^0.1.1"
+    "rpi-gpio": "^0.7.0"
   },
   "devDependencies": {
     "babel-core": "^6.17.0",
