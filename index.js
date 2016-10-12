@@ -16,6 +16,8 @@ controller.getInterface().then(controllerInterface => {
     controllerInterface.pressPower().then(_releasePower => {
       releasePower = _releasePower;
       res.status(200).end();
+    }, err => {
+      throw err;
     });
   });
 
@@ -24,6 +26,8 @@ controller.getInterface().then(controllerInterface => {
     if (releasePower) {
       releasePower().then(() => {
         res.status(200).end();
+      }, err => {
+        throw err;
       });
       releasePower = undefined;
     }

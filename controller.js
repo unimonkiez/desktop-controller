@@ -141,7 +141,10 @@ const controllerInterface = {
   }), {}),
   pressPower() {
     if (this.status[FEATURES.POWER] === BUTTON_MODE.PRESSED) {
-      throw new Error('Power is already pressed, can\'t call `pressPower` again.');
+      return new Promise((_, rej) => { rej(new Error('Power is already pressed.')); });
+    }
+    if (this.inProcess[FEATURES.POWER]) {
+      return new Promise((_, rej) => { rej(new Error('Power is already in process.')); });
     }
     this.inProcess[FEATURES.POWER] = true;
     return pressPower().then(() => {
@@ -149,7 +152,9 @@ const controllerInterface = {
       this.status[FEATURES.POWER] = BUTTON_MODE.PRESSED;
       setTimeout(() => {
         if (this.status[FEATURES.POWER] === BUTTON_MODE.PRESSED) {
-          this._releasePower();
+          this._releasePower().then(undefined, err => {
+            console.log(err);
+          });
         }
       }, AUTO_RELEASE);
       return this._releasePower.bind(this);
@@ -159,7 +164,12 @@ const controllerInterface = {
   },
   _releasePower() {
     if (this.status[FEATURES.POWER] === BUTTON_MODE.NOT_PRESSED) {
-      throw new Error(`Power is already released, can't call \`releasePower\` again, might been called after program auto released the button (after ${this.AUTO_RELEASE}ms).`);
+      return new Promise((_, rej) => {
+        rej(new Error(`Power is already released, can't call \`releasePower\` again, might been called after program auto released the button (after ${this.AUTO_RELEASE}ms).`));
+      });
+    }
+    if (this.inProcess[FEATURES.POWER]) {
+      return new Promise((_, rej) => { rej(new Error('Power is already in process.')); });
     }
     this.inProcess[FEATURES.POWER] = true;
     return releasePower().then(() => {
@@ -171,7 +181,10 @@ const controllerInterface = {
   },
   pressReset() {
     if (this.status[FEATURES.RESET] === BUTTON_MODE.PRESSED) {
-      throw new Error('Reset is already pressed, can\'t call `pressReset` again.');
+      return new Promise((_, rej) => { rej(new Error('Reset is already pressed, can\'t call `pressReset` again.')); });
+    }
+    if (this.inProcess[FEATURES.RESET]) {
+      return new Promise((_, rej) => { rej(new Error('Reset is already in process.')); });
     }
     this.inProcess[FEATURES.RESET] = true;
     setTimeout(() => {
@@ -189,7 +202,12 @@ const controllerInterface = {
   },
   _releaseReset() {
     if (this.status[FEATURES.RESET] === BUTTON_MODE.NOT_PRESSED) {
-      throw new Error(`Reset is already released, can't call \`releaseReset\` again, might been called after program auto released the button (after ${this.AUTO_RELEASE}ms).`);
+      return new Promise((_, rej) => {
+        rej(new Error(`Reset is already released, can't call \`releaseReset\` again, might been called after program auto released the button (after ${this.AUTO_RELEASE}ms).`));
+      });
+    }
+    if (this.inProcess[FEATURES.RESET]) {
+      return new Promise((_, rej) => { rej(new Error('Reset is already in process.')); });
     }
     this.inProcess[FEATURES.RESET] = true;
     return releaseReset().then(() => {
@@ -201,7 +219,10 @@ const controllerInterface = {
   },
   turnOnWifi() {
     if (this.status[FEATURES.WIFI] === SWITCH_MODE.ON) {
-      throw new Error('Wifi is already on, can\'t call `turnOnWifi` again.');
+      return new Promise((_, rej) => { rej(new Error('Wifi is already on, can\'t call `turnOnWifi` again.')); });
+    }
+    if (this.inProcess[FEATURES.WIFI]) {
+      return new Promise((_, rej) => { rej(new Error('Wifi is already in process.')); });
     }
     this.inProcess[FEATURES.WIFI] = true;
     return turnOnWifi().then(() => {
@@ -213,7 +234,10 @@ const controllerInterface = {
   },
   turnOffWifi() {
     if (this.status[FEATURES.WIFI] === SWITCH_MODE.OFF) {
-      throw new Error('Wifi is already off, can\'t call `turnOffWifi` again.');
+      return new Promise((_, rej) => { rej(new Error('Wifi is already off, can\'t call `turnOffWifi` again.')); });
+    }
+    if (this.inProcess[FEATURES.WIFI]) {
+      return new Promise((_, rej) => { rej(new Error('Wifi is already in process.')); });
     }
     this.inProcess[FEATURES.WIFI] = true;
     return turnOffWifi().then(() => {
@@ -225,7 +249,10 @@ const controllerInterface = {
   },
   turnOnUvLight() {
     if (this.status[FEATURES.UV] === SWITCH_MODE.ON) {
-      throw new Error('UvLight is already on, can\'t call `turnOnUvLight` again.');
+      return new Promise((_, rej) => { rej(new Error('UvLight is already on, can\'t call `turnOnUvLight` again.')); });
+    }
+    if (this.inProcess[FEATURES.UV]) {
+      return new Promise((_, rej) => { rej(new Error('UvLight is already in process.')); });
     }
     this.inProcess[FEATURES.UV] = true;
     return turnOnUvLight().then(() => {
@@ -237,7 +264,10 @@ const controllerInterface = {
   },
   turnOffUvLight() {
     if (this.status[FEATURES.UV] === SWITCH_MODE.OFF) {
-      throw new Error('UvLight is already off, can\'t call `turnOffUvLight` again.');
+      return new Promise((_, rej) => { rej(new Error('UvLight is already off, can\'t call `turnOffUvLight` again.')); });
+    }
+    if (this.inProcess[FEATURES.UV]) {
+      return new Promise((_, rej) => { rej(new Error('UvLight is already in process.')); });
     }
     this.inProcess[FEATURES.UV] = true;
     return turnOffUvLight().then(() => {
@@ -249,10 +279,13 @@ const controllerInterface = {
   },
   turnOnLed(color) {
     if (color === undefined) {
-      throw new Error('`color` is required as first argument.');
+      return new Promise((_, rej) => { rej(new Error('`color` is required as first argument.')); });
     }
     if (this.status[FEATURES.LED] !== COLOR_MODE.OFF) {
-      throw new Error('Led is already on, can\'t call `turnOnLed` again.');
+      return new Promise((_, rej) => { rej(new Error('Led is already on, can\'t call `turnOnLed` again.')); });
+    }
+    if (this.inProcess[FEATURES.LED]) {
+      return new Promise((_, rej) => { rej(new Error('Led is already in process.')); });
     }
     this.inProcess[FEATURES.LED] = true;
     const colorObj = Color(color);
@@ -265,7 +298,10 @@ const controllerInterface = {
   },
   turnOffLed() {
     if (this.status[FEATURES.LED] === COLOR_MODE.OFF) {
-      throw new Error('Led is already off, can\'t call `turnOffLed` again.');
+      return new Promise((_, rej) => { rej(new Error('Led is already off, can\'t call `turnOffLed` again.')); });
+    }
+    if (this.inProcess[FEATURES.LED]) {
+      return new Promise((_, rej) => { rej(new Error('Led is already in process.')); });
     }
     this.inProcess[FEATURES.LED] = true;
     return turnOffLed().then(() => {
@@ -277,10 +313,13 @@ const controllerInterface = {
   },
   setLed(color) {
     if (color === undefined) {
-      throw new Error('`color` is required as first argument.');
+      return new Promise((_, rej) => { rej(new Error('`color` is required as first argument.')); });
     }
     if (this.status[FEATURES.LED] === COLOR_MODE.OFF) {
-      throw new Error('Led is off and it\'s color cannot be set, can\'t call `setLed`.');
+      return new Promise((_, rej) => { rej(new Error('Led is off and it\'s color cannot be set, can\'t call `setLed`.')); });
+    }
+    if (this.inProcess[FEATURES.LED]) {
+      return new Promise((_, rej) => { rej(new Error('Led is already in process.')); });
     }
     const colorObj = Color(color);
     this.inProcess[FEATURES.LED] = true;
