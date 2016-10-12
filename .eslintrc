@@ -12,6 +12,7 @@
   },
   "rules": {
     "import/extensions": [0],
+    "import/no-extraneous-dependencies": [2, {"devDependencies": true, "optionalDependencies": true}],
     "arrow-parens": [2, "as-needed"],
     "no-underscore-dangle": [2, { "allowAfterThis": true }],
     "no-console": 0,
