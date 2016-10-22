@@ -2,6 +2,7 @@
 const path = require('path');
 const express = require('express');
 const controller = require('./controller.js');
+const getStyleForArgs = require('./get-style-for-args.js');
 
 const args = process.argv.slice(2);
 const useWebpack = args.indexOf('-w') !== -1;
@@ -9,7 +10,18 @@ const useWebpack = args.indexOf('-w') !== -1;
 const app = express();
 const PORT = useWebpack ? 8080 : 80;
 
+const style = getStyleForArgs(args);
+const activatedFeatures = controller.activatedFeatures;
+
 controller.getInterface().then(controllerInterface => {
+  const config = {
+    style,
+    activatedFeatures
+  };
+  app.get('/config', (req, res) => {
+    res.json(config);
+  });
+
   let releasePower;
   // Press
   app.post('/power', (req, res) => {

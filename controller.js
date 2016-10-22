@@ -1,27 +1,17 @@
+const { FEATURES, BUTTON_MODE, COLOR_MODE, SWITCH_MODE, AUTO_RELEASE } = require('./constant.js');
 const Color = require('color');
+const getFeaturePinsForArgs = require('./get-feature-pins-for-args.js');
 
 const args = process.argv.slice(2);
 const isMock = args.indexOf('-m') !== -1;
 
-const FEATURES = {
-  POWER: 0,
-  RESET: 1,
-  WIFI: 2,
-  UV: 4,
-  LED: 8
-};
-const AUTO_RELEASE = 5000;
-const BUTTON_MODE = {
-  PRESSED: 0,
-  NOT_PRESSED: 1
-};
-const SWITCH_MODE = {
-  ON: 0,
-  OFF: 1
-};
-const COLOR_MODE = {
-  OFF: undefined
-};
+let gpio;
+if (!isMock) {
+  // Optional dependency, won't be available on any machine other than rpi
+  // eslint-disable-next-line global-require, import/no-unresolved
+  gpio = require('rpi-gpio');
+}
+
 const getDefaultModeToFeature = feature => {
   switch (feature) {
     case FEATURES.POWER:
@@ -34,103 +24,126 @@ const getDefaultModeToFeature = feature => {
   }
 };
 
-let activatedFeatures;
-let isInterfaceReady;
-let interfaceReadyPromise;
+const featurePins = getFeaturePinsForArgs(args);
+const activatedFeatures = Object.keys(featurePins).map(key => Number(key));
+
+if (activatedFeatures.length === 0) {
+  throw new Error(`
+    No features are activated, to activate a feature add parameters to "desktop-controller" command.
+    Available features ${Object.keys(FEATURES).map(featureName => `"-${featureName.toLowerCase()}"`).join(', ')}
+  `);
+}
+
+let isInterfaceReady = isMock;
+const initialzationPromises = [];
+
 let pressPower;
 let releasePower;
+if (activatedFeatures.indexOf(FEATURES.POWER) !== -1) {
+  if (isMock) {
+    pressPower = () => new Promise(resolve => {
+      console.log('`pressPower` was called.');
+      resolve();
+    });
+    releasePower = () => new Promise(resolve => {
+      console.log('`releasePower` was called.');
+      resolve();
+    });
+  } else {
+    const pin = featurePins[FEATURES.POWER];
+    initialzationPromises.push(
+      new Promise((resolve, reject) => {
+        gpio.setup(pin, gpio.DIR_OUT, setupErr => {
+          if (setupErr) reject(setupErr);
+          pressPower = () => {
+            gpio.write(pin, true, err => {
+              if (err) throw err;
+              if (setupErr) reject(setupErr);
+              console.log('pressing power!');
+            });
+          };
+          releasePower = () => {
+            gpio.write(pin, false, err => {
+              if (err) throw err;
+              if (setupErr) reject(setupErr);
+              console.log('releasing power!');
+            });
+          };
+          resolve();
+        });
+      })
+    );
+  }
+}
+
 let pressReset;
 let releaseReset;
-let turnOnWifi;
-let turnOffWifi;
-let turnOnUvLight;
-let turnOffUvLight;
-let turnOnLed;
-let turnOffLed;
-let setLed;
-
-if (isMock) {
-  activatedFeatures = Object.keys(FEATURES).map(k => FEATURES[k]);
-  isInterfaceReady = true;
-  pressPower = () => new Promise(resolve => {
-    console.log('`pressPower` was called.');
-    resolve();
-  });
-  releasePower = () => new Promise(resolve => {
-    console.log('`releasePower` was called.');
-    resolve();
-  });
-  pressReset = () => new Promise(resolve => {
-    console.log('`pressReset` was called.');
-    resolve();
-  });
-  releaseReset = () => new Promise(resolve => {
-    console.log('`releaseReset` was called.');
-    resolve();
-  });
-  turnOnWifi = () => new Promise(resolve => {
-    console.log('`turnOnWifi` was called.');
-    resolve();
-  });
-  turnOffWifi = () => new Promise(resolve => {
-    console.log('`turnOffWifi` was called.');
-    resolve();
-  });
-  turnOnUvLight = () => new Promise(resolve => {
-    console.log('`turnOnUvLight` was called.');
-    resolve();
-  });
-  turnOffUvLight = () => new Promise(resolve => {
-    console.log('`turnOffUvLight` was called.');
-    resolve();
-  });
-  turnOnLed = color => new Promise(resolve => {
-    console.log(`\`turnOnLed\` was called with color - ${color}.`);
-    resolve();
-  });
-  turnOffLed = () => new Promise(resolve => {
-    console.log('`turnOffLed` was called.');
-    resolve();
-  });
-  setLed = color => new Promise(resolve => {
-    console.log(`\`setLed\` was called with color - ${color}.`);
-    resolve();
-  });
-} else {
-  // Optional dependency, won't be available on any machine other than rpi
-  // eslint-disable-next-line global-require, import/no-unresolved
-  const gpio = require('rpi-gpio');
-
-  interfaceReadyPromise = Promise.all([
-    new Promise((resolve, reject) => {
-      gpio.setup(11, gpio.DIR_OUT, setupErr => {
-        if (setupErr) reject(setupErr);
-        pressPower = () => {
-          gpio.write(11, true, err => {
-            if (err) throw err;
-            if (setupErr) reject(setupErr);
-            console.log('pressing power!');
-          });
-        };
-        releasePower = () => {
-          gpio.write(11, false, err => {
-            if (err) throw err;
-            if (setupErr) reject(setupErr);
-            console.log('releasing power!');
-          });
-        };
-        resolve();
-      });
-    })
-  ]).then(() => {
-    isInterfaceReady = true;
-    process.on('SIGINT', () => {
-      gpio.destroy(() => {
-        console.log('All pins unexported');
-      });
+if (activatedFeatures.indexOf(FEATURES.RESET) !== -1) {
+  if (isMock) {
+    pressReset = () => new Promise(resolve => {
+      console.log('`pressReset` was called.');
+      resolve();
     });
-  });
+    releaseReset = () => new Promise(resolve => {
+      console.log('`releaseReset` was called.');
+      resolve();
+    });
+  } else {
+    const pin = featurePins[FEATURES.RESET];
+    initialzationPromises.push(
+      new Promise((resolve, reject) => {
+        gpio.setup(pin, gpio.DIR_OUT, setupErr => {
+          if (setupErr) reject(setupErr);
+          pressPower = () => {
+            gpio.write(pin, true, err => {
+              if (err) throw err;
+              if (setupErr) reject(setupErr);
+              console.log('pressing reset!');
+            });
+          };
+          releasePower = () => {
+            gpio.write(pin, false, err => {
+              if (err) throw err;
+              if (setupErr) reject(setupErr);
+              console.log('releasing reset!');
+            });
+          };
+          resolve();
+        });
+      })
+    );
+  }
 }
+
+
+const turnOnWifi = () => new Promise(resolve => {
+  console.log('`turnOnWifi` was called.');
+  resolve();
+});
+const turnOffWifi = () => new Promise(resolve => {
+  console.log('`turnOffWifi` was called.');
+  resolve();
+});
+const turnOnUvLight = () => new Promise(resolve => {
+  console.log('`turnOnUvLight` was called.');
+  resolve();
+});
+const turnOffUvLight = () => new Promise(resolve => {
+  console.log('`turnOffUvLight` was called.');
+  resolve();
+});
+const turnOnLed = color => new Promise(resolve => {
+  console.log(`\`turnOnLed\` was called with color - ${color}.`);
+  resolve();
+});
+const turnOffLed = () => new Promise(resolve => {
+  console.log('`turnOffLed` was called.');
+  resolve();
+});
+const setLed = color => new Promise(resolve => {
+  console.log(`\`setLed\` was called with color - ${color}.`);
+  resolve();
+});
 
 const controllerInterface = {
   status: activatedFeatures.reduce((obj, feature) => Object.assign(obj, {
@@ -361,18 +374,19 @@ const controllerInterface = {
   }
 };
 
+const interfaceReadyPromise = Promise.all(initialzationPromises).then(() => {
+  isInterfaceReady = true;
+}, err => {
+  throw err;
+});
+
 module.exports = {
-  AUTO_RELEASE,
-  BUTTON_MODE,
-  SWITCH_MODE,
-  COLOR_MODE,
-  FEATURES,
   activatedFeatures,
   getInterface() {
     if (isInterfaceReady) {
       return new Promise(resolve => resolve(controllerInterface));
     } else {
-      return interfaceReadyPromise().then(() => controllerInterface);
+      return interfaceReadyPromise.then(() => controllerInterface);
     }
   }
 };

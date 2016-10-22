@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 
 export default class App extends Component {
   static handlePowerPress(e) {
@@ -23,4 +23,13 @@ export default class App extends Component {
       </div>
     );
   }
+}
+if (__DEV__) {
+  App.propTypes = {
+    style: PropTypes.shape({
+      primary: PropTypes.string.isRequired,
+      secondary: PropTypes.string.isRequired
+    }).isRequired,
+    activatedFeatures: PropTypes.arrayOf(PropTypes.number).isRequired
+  };
 }
