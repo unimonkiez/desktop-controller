@@ -183,7 +183,7 @@ const controllerInterface = {
       throw new Error('This feature is not activated.');
     }
     if (this.status[FEATURES.POWER] === BUTTON_MODE.NOT_PRESSED) {
-      throw new Error(`Power is already released, can't call \`releasePower\` again, might been called after program auto released the button (after ${this.AUTO_RELEASE}ms).`);
+      throw new Error(`Power is already released, can't call \`releasePower\` again, might been called after program auto released the button (after ${AUTO_RELEASE}ms).`);
     }
     if (this.inProcess[FEATURES.POWER]) {
       throw new Error('Power is already in process.');
@@ -211,7 +211,7 @@ const controllerInterface = {
       if (this.status[FEATURES.RESET] === BUTTON_MODE.PRESSED) {
         this._releaseReset();
       }
-    }, this.AUTO_RELEASE);
+    }, AUTO_RELEASE);
     return pressReset().then(() => {
       this.inProcess[FEATURES.RESET] = false;
       this.status[FEATURES.RESET] = BUTTON_MODE.PRESSED;
@@ -225,7 +225,7 @@ const controllerInterface = {
       throw new Error('This feature is not activated.');
     }
     if (this.status[FEATURES.RESET] === BUTTON_MODE.NOT_PRESSED) {
-      throw new Error(`Reset is already released, can't call \`releaseReset\` again, might been called after program auto released the button (after ${this.AUTO_RELEASE}ms).`);
+      throw new Error(`Reset is already released, can't call \`releaseReset\` again, might been called after program auto released the button (after ${AUTO_RELEASE}ms).`);
     }
     if (this.inProcess[FEATURES.RESET]) {
       throw new Error('Reset is already in process.');
@@ -233,7 +233,7 @@ const controllerInterface = {
     this.inProcess[FEATURES.RESET] = true;
     return releaseReset().then(() => {
       this.inProcess[FEATURES.RESET] = false;
-      this.status[FEATURES.RESET] = this.BUTTON_MODE.NOT_PRESSED;
+      this.status[FEATURES.RESET] = BUTTON_MODE.NOT_PRESSED;
     }, () => {
       this.inProcess[FEATURES.RESET] = false;
     });
@@ -345,7 +345,7 @@ const controllerInterface = {
     this.inProcess[FEATURES.LED] = true;
     return turnOffLed().then(() => {
       this.inProcess[FEATURES.LED] = false;
-      this.status[FEATURES.LED] = this.COLOR_MODE.OFF;
+      this.status[FEATURES.LED] = COLOR_MODE.OFF;
     }, () => {
       this.inProcess[FEATURES.LED] = false;
     });
