@@ -10,7 +10,7 @@
     "test": "npm run lint",
     "build": "webpack",
     "build:prod": "webpack -p",
-    "start": "npm run start:prod -- -m -w -power 1 -reset 2 -wifi 3 -uv 4 -led 5",
+    "start": "npm run start:prod -- -m -w -power 1 -reset 2 -wifi 3 -uv 4 -led 5,6,7",
     "start:prod": "node ./index.js"
   },
   "author": "unimonkiez",

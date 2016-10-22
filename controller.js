@@ -1,16 +1,9 @@
 const { FEATURES, BUTTON_MODE, COLOR_MODE, SWITCH_MODE, AUTO_RELEASE } = require('./constant.js');
 const Color = require('color');
 const getFeaturePinsForArgs = require('./get-feature-pins-for-args.js');
+const getGpioManager = require('./get-gpio-manager.js');
 
 const args = process.argv.slice(2);
-const isMock = args.indexOf('-m') !== -1;
-
-let gpio;
-if (!isMock) {
-  // Optional dependency, won't be available on any machine other than rpi
-  // eslint-disable-next-line global-require, import/no-unresolved
-  gpio = require('rpi-gpio');
-}
 
 const getDefaultModeToFeature = feature => {
   switch (feature) {
@@ -34,115 +27,11 @@ if (activatedFeatures.length === 0) {
   `);
 }
 
-let isInterfaceReady = isMock;
-const initialzationPromises = [];
-
-let pressPower;
-let releasePower;
-if (activatedFeatures.indexOf(FEATURES.POWER) !== -1) {
-  if (isMock) {
-    pressPower = () => new Promise(resolve => {
-      console.log('`pressPower` was called.');
-      resolve();
-    });
-    releasePower = () => new Promise(resolve => {
-      console.log('`releasePower` was called.');
-      resolve();
-    });
-  } else {
-    const pin = featurePins[FEATURES.POWER];
-    initialzationPromises.push(
-      new Promise((resolve, reject) => {
-        gpio.setup(pin, gpio.DIR_OUT, setupErr => {
-          if (setupErr) reject(setupErr);
-          pressPower = () => {
-            gpio.write(pin, true, err => {
-              if (err) throw err;
-              if (setupErr) reject(setupErr);
-              console.log('pressing power!');
-            });
-          };
-          releasePower = () => {
-            gpio.write(pin, false, err => {
-              if (err) throw err;
-              if (setupErr) reject(setupErr);
-              console.log('releasing power!');
-            });
-          };
-          resolve();
-        });
-      })
-    );
-  }
-}
-
-let pressReset;
-let releaseReset;
-if (activatedFeatures.indexOf(FEATURES.RESET) !== -1) {
-  if (isMock) {
-    pressReset = () => new Promise(resolve => {
-      console.log('`pressReset` was called.');
-      resolve();
-    });
-    releaseReset = () => new Promise(resolve => {
-      console.log('`releaseReset` was called.');
-      resolve();
-    });
-  } else {
-    const pin = featurePins[FEATURES.RESET];
-    initialzationPromises.push(
-      new Promise((resolve, reject) => {
-        gpio.setup(pin, gpio.DIR_OUT, setupErr => {
-          if (setupErr) reject(setupErr);
-          pressPower = () => {
-            gpio.write(pin, true, err => {
-              if (err) throw err;
-              if (setupErr) reject(setupErr);
-              console.log('pressing reset!');
-            });
-          };
-          releasePower = () => {
-            gpio.write(pin, false, err => {
-              if (err) throw err;
-              if (setupErr) reject(setupErr);
-              console.log('releasing reset!');
-            });
-          };
-          resolve();
-        });
-      })
-    );
-  }
-}
-
-
-const turnOnWifi = () => new Promise(resolve => {
-  console.log('`turnOnWifi` was called.');
-  resolve();
-});
-const turnOffWifi = () => new Promise(resolve => {
-  console.log('`turnOffWifi` was called.');
-  resolve();
-});
-const turnOnUvLight = () => new Promise(resolve => {
-  console.log('`turnOnUvLight` was called.');
-  resolve();
-});
-const turnOffUvLight = () => new Promise(resolve => {
-  console.log('`turnOffUvLight` was called.');
-  resolve();
-});
-const turnOnLed = color => new Promise(resolve => {
-  console.log(`\`turnOnLed\` was called with color - ${color}.`);
-  resolve();
-});
-const turnOffLed = () => new Promise(resolve => {
-  console.log('`turnOffLed` was called.');
-  resolve();
-});
-const setLed = color => new Promise(resolve => {
-  console.log(`\`setLed\` was called with color - ${color}.`);
-  resolve();
+let gpioManager;
+const gpioManagerPromise = getGpioManager(activatedFeatures, featurePins).then(_gpioManager => {
+  gpioManager = _gpioManager;
+}, err => {
+  throw err;
 });
 
 const controllerInterface = {
@@ -163,7 +52,7 @@ const controllerInterface = {
       throw new Error('Power is already in process.');
     }
     this.inProcess[FEATURES.POWER] = true;
-    return pressPower().then(() => {
+    return gpioManager.pressPower().then(() => {
       this.inProcess[FEATURES.POWER] = false;
       this.status[FEATURES.POWER] = BUTTON_MODE.PRESSED;
       setTimeout(() => {
@@ -189,7 +78,7 @@ const controllerInterface = {
       throw new Error('Power is already in process.');
     }
     this.inProcess[FEATURES.POWER] = true;
-    return releasePower().then(() => {
+    return gpioManager.releasePower().then(() => {
       this.inProcess[FEATURES.POWER] = false;
       this.status[FEATURES.POWER] = BUTTON_MODE.NOT_PRESSED;
     }, () => {
@@ -212,7 +101,7 @@ const controllerInterface = {
         this._releaseReset();
       }
     }, AUTO_RELEASE);
-    return pressReset().then(() => {
+    return gpioManager.pressReset().then(() => {
       this.inProcess[FEATURES.RESET] = false;
       this.status[FEATURES.RESET] = BUTTON_MODE.PRESSED;
       return this._releaseReset.bind(this);
@@ -231,7 +120,7 @@ const controllerInterface = {
       throw new Error('Reset is already in process.');
     }
     this.inProcess[FEATURES.RESET] = true;
-    return releaseReset().then(() => {
+    return gpioManager.releaseReset().then(() => {
       this.inProcess[FEATURES.RESET] = false;
       this.status[FEATURES.RESET] = BUTTON_MODE.NOT_PRESSED;
     }, () => {
@@ -249,7 +138,7 @@ const controllerInterface = {
       throw new Error('Wifi is already in process.');
     }
     this.inProcess[FEATURES.WIFI] = true;
-    return turnOnWifi().then(() => {
+    return gpioManager.turnOnWifi().then(() => {
       this.inProcess[FEATURES.WIFI] = false;
       this.status[FEATURES.WIFI] = SWITCH_MODE.ON;
     }, () => {
@@ -267,7 +156,7 @@ const controllerInterface = {
       throw new Error('Wifi is already in process.');
     }
     this.inProcess[FEATURES.WIFI] = true;
-    return turnOffWifi().then(() => {
+    return gpioManager.turnOffWifi().then(() => {
       this.inProcess[FEATURES.WIFI] = false;
       this.status[FEATURES.WIFI] = SWITCH_MODE.OFF;
     }, () => {
@@ -285,7 +174,7 @@ const controllerInterface = {
       throw new Error('UvLight is already in process.');
     }
     this.inProcess[FEATURES.UV] = true;
-    return turnOnUvLight().then(() => {
+    return gpioManager.turnOnUvLight().then(() => {
       this.inProcess[FEATURES.UV] = false;
       this.status[FEATURES.UV] = SWITCH_MODE.ON;
     }, () => {
@@ -303,7 +192,7 @@ const controllerInterface = {
       throw new Error('UvLight is already in process.');
     }
     this.inProcess[FEATURES.UV] = true;
-    return turnOffUvLight().then(() => {
+    return gpioManager.turnOffUvLight().then(() => {
       this.inProcess[FEATURES.UV] = false;
       this.status[FEATURES.UV] = SWITCH_MODE.OFF;
     }, () => {
@@ -325,7 +214,7 @@ const controllerInterface = {
     }
     this.inProcess[FEATURES.LED] = true;
     const colorObj = Color(color);
-    return turnOnLed(colorObj).then(() => {
+    return gpioManager.turnOnLed(colorObj.red(), colorObj.green(), colorObj.blue()).then(() => {
       this.inProcess[FEATURES.LED] = false;
       this.status[FEATURES.LED] = colorObj.rgbString();
     }, () => {
@@ -343,7 +232,7 @@ const controllerInterface = {
       throw new Error('Led is already in process.');
     }
     this.inProcess[FEATURES.LED] = true;
-    return turnOffLed().then(() => {
+    return gpioManager.turnOffLed().then(() => {
       this.inProcess[FEATURES.LED] = false;
       this.status[FEATURES.LED] = COLOR_MODE.OFF;
     }, () => {
@@ -365,7 +254,7 @@ const controllerInterface = {
     }
     const colorObj = Color(color);
     this.inProcess[FEATURES.LED] = true;
-    return setLed(colorObj).then(() => {
+    return gpioManager.setLed(colorObj.red(), colorObj.green(), colorObj.blue()).then(() => {
       this.inProcess[FEATURES.LED] = false;
       this.status[FEATURES.LED] = colorObj.rgbString();
     }, () => {
@@ -374,19 +263,13 @@ const controllerInterface = {
   }
 };
 
-const interfaceReadyPromise = Promise.all(initialzationPromises).then(() => {
-  isInterfaceReady = true;
-}, err => {
-  throw err;
-});
-
 module.exports = {
   activatedFeatures,
   getInterface() {
-    if (isInterfaceReady) {
+    if (gpioManager !== undefined) {
       return new Promise(resolve => resolve(controllerInterface));
     } else {
-      return interfaceReadyPromise.then(() => controllerInterface);
+      return gpioManagerPromise.then(() => controllerInterface);
     }
   }
 };
