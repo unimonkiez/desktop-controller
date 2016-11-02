@@ -11,6 +11,7 @@
     "modules": false
   },
   "rules": {
+    "react/prefer-stateless-function": [0],
     "import/extensions": [0],
     "import/no-extraneous-dependencies": [2, {"devDependencies": true, "optionalDependencies": true}],
     "arrow-parens": [2, "as-needed"],

@@ -101,5 +101,8 @@ module.exports = ({ isProd = false, isWebpackDevServer = false }) => ({
         loader: 'url?limit=10000&name=./asset/[hash].[ext]'
       }
     ]
+  },
+  resolve: {
+    root: path.resolve(__dirname)
   }
 });
