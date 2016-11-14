@@ -51,8 +51,8 @@ export default class Power extends Component {
           onMouseUp={this.handleRelease}
           style={{
             position: 'releative',
-            height: '400px',
-            width: '400px',
+            height: '350px',
+            width: '350px',
             borderRadius: '50%',
             backgroundColor: pressed ? Color(style.secondary).darken(0.2).rgbaString() : style.secondary,
             border: `2px solid ${Color(style.secondary).darken(0.4).rgbaString()}`,

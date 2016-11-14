@@ -81,7 +81,7 @@ controller.getInterface().then(controllerInterface => {
 
   // Off
   app.delete('/wifi', (req, res) => {
-    controllerInterface.turnOffWifi()().then(() => {
+    controllerInterface.turnOffWifi().then(() => {
       res.end();
     }, err => {
       throw err;
@@ -99,7 +99,7 @@ controller.getInterface().then(controllerInterface => {
 
   // Off
   app.delete('/uv', (req, res) => {
-    controllerInterface.turnOffUvLight()().then(() => {
+    controllerInterface.turnOffUvLight().then(() => {
       res.end();
     }, err => {
       throw err;
@@ -128,7 +128,7 @@ controller.getInterface().then(controllerInterface => {
 
   // Off
   app.delete('/led', (req, res) => {
-    controllerInterface.turnOffLed()().then(() => {
+    controllerInterface.turnOffLed().then(() => {
       res.end();
     }, err => {
       throw err;
