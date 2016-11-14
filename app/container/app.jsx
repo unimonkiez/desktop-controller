@@ -27,8 +27,8 @@ export default class App extends Component {
 
     const theme = getMuiTheme({
       palette: {
-        primary1Color: primaryColor.rgbaString(),
-        primary2Color: primaryColor.darken(0.4).rgbaString(),
+        primary1Color: secondaryColor.rgbaString(),
+        primary2Color: secondaryColor.darken(0.4).rgbaString(),
         accent1Color: secondaryColor.rgbaString(),
         pickerHeaderColor: primaryColor.rgbaString()
       }

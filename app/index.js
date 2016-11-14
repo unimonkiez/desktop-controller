@@ -6,6 +6,7 @@ import getConfig from './common/get-config.js';
 
 window.onload = () => {
   document.body.style.margin = 0;
+  document.body.style.overflow = 'hidden';
   getConfig.then(config => {
     document.body.style['background-color'] = config.style.primary;
 

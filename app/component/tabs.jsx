@@ -64,18 +64,20 @@ export default class Tabs extends Component {
             features={tab.features}
           />
         </div>
-        <BottomNavigation selectedIndex={selectedTabIndex}>
-          {
-            tabs.map(({ label, icon }, i) => (
-              <BottomNavigationItem
-                key={i}
-                label={label}
-                icon={icon}
-                onTouchTap={() => this.handleSelectBottomNavigationItem(i)}
-              />
-            ))
-          }
-        </BottomNavigation>
+        <div style={{ flex: '0 0 56px', height: '56px' }}>
+          <BottomNavigation selectedIndex={selectedTabIndex}>
+            {
+              tabs.map(({ label, icon }, i) => (
+                <BottomNavigationItem
+                  key={i}
+                  label={label}
+                  icon={icon}
+                  onTouchTap={() => this.handleSelectBottomNavigationItem(i)}
+                />
+              ))
+            }
+          </BottomNavigation>
+        </div>
       </div>
     );
   }

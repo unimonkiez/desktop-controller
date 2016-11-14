@@ -13,7 +13,11 @@ export default class Tab extends Component {
         </div>
         <div>
           {
-            features.map((Feature, i) => <Feature key={i} />)
+            features.map((Feature, i) => (
+              <div key={i} style={{ padding: '20px' }}>
+                <Feature />
+              </div>
+            ))
           }
         </div>
       </div>
