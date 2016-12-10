@@ -6,7 +6,7 @@ const isMock = args.indexOf('-m') !== -1;
 let gpio;
 if (!isMock) {
   // Optional dependency, won't be available on any machine other than rpi
-  // eslint-disable-next-line global-require, import/no-unresolved
+  // eslint-disable-next-line global-require, import/no-unresolved, import/no-extraneous-dependencies
   gpio = require('rpi-gpio');
 }
 
