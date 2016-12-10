@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import fetchHandler from '../common/fetch-handler.js';
 import Toggle from 'material-ui/Toggle';
+import fetchHandler from '../common/fetch-handler.js';
 
 export default class Wifi extends Component {
   state = {
