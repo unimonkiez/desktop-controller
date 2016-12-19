@@ -44,12 +44,15 @@ module.exports = (activatedFeatures, featurePins) => new Promise(_resolve => {
           new Promise((resolve, reject) => {
             gpio.setup(pin, gpio.DIR_OUT, setupErr => {
               if (setupErr) reject(setupErr);
-              resolve();
+              gpio.write(pin, true, writeErr => {
+                if (writeErr) reject(writeErr);
+                resolve();
+              });
             });
           }).then(() => {
             internalInterface[onFunctionName] = () => new Promise((resolve, reject) => {
               console.log(`"${onFunctionName}" was called.`);
-              gpio.write(pin, true, err => {
+              gpio.write(pin, false, err => {
                 if (err) reject(err);
                 console.log(`"${onFunctionName}" has finished.`);
                 resolve();
@@ -57,7 +60,7 @@ module.exports = (activatedFeatures, featurePins) => new Promise(_resolve => {
             });
             internalInterface[offFunctionName] = () => new Promise((resolve, reject) => {
               console.log(`"${offFunctionName}" was called.`);
-              gpio.write(pin, false, err => {
+              gpio.write(pin, true, err => {
                 if (err) reject(err);
                 console.log(`"${offFunctionName}" has finished.`);
                 resolve();
