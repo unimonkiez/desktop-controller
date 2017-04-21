@@ -7,4 +7,5 @@ bin/
 .travis.yml
 .npmignore
 npm-debug.log
+package.json_BACKUP
 yarn.lock
