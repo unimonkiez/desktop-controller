@@ -5,15 +5,23 @@ const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
-module.exports = ({ isProd = false, isWebpackDevServer = false }) => ({
+const appPath = path.join(__dirname, '..', 'app');
+const distPath = path.join(__dirname, '..', 'dist');
+
+module.exports = ({
+  isProd = false,
+  isWebpackDevServer = false,
+  bail = false
+}) => ({
+  bail,
   devtool: 'source-map',
   entry: {
     [`app${isProd ? '.min' : ''}`]: (
       isWebpackDevServer ? ['webpack-hot-middleware/client'] : []
-    ).concat(path.join(__dirname, 'app', 'index.js'))
+    ).concat(path.join(appPath, 'index.js'))
   },
   output: {
-    path: path.join(__dirname, 'dist'),
+    path: distPath,
     filename: '[name].js',
     publicPath: ''
   },
@@ -29,7 +37,7 @@ module.exports = ({ isProd = false, isWebpackDevServer = false }) => ({
     }),
     new HtmlWebpackPlugin({
       minify: {},
-      template: path.join(__dirname, 'app', 'index.html'),
+      template: path.join(appPath, 'index.html'),
       inject: 'head'
     }),
     new webpack.ProvidePlugin({
@@ -103,6 +111,6 @@ module.exports = ({ isProd = false, isWebpackDevServer = false }) => ({
     ]
   },
   resolve: {
-    root: path.resolve(__dirname)
+    root: path.join(__dirname, '..')
   }
 });

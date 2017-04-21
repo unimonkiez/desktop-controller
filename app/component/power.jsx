@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import PowerIcon from 'material-ui/svg-icons/action/power-settings-new';
 import Color from 'color';
-import { AUTO_RELEASE } from '../../constant.js';
+import { AUTO_RELEASE } from 'lib/constant.js';
 
 export default class Power extends Component {
   static contextTypes = {
