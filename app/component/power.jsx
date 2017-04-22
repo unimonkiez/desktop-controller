@@ -1,42 +1,15 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import PowerIcon from 'material-ui/svg-icons/action/power-settings-new';
-import Color from 'color';
-import { AUTO_RELEASE } from 'lib/constant.js';
+import Button from 'app/component/button.jsx';
 
 export default class Power extends Component {
-  static contextTypes = {
-    style: PropTypes.object.isRequired
-  };
-  state = {
-    pressed: false
-  };
-  handlePress = this.handlePress.bind(this);
-  handlePress() {
-    fetch('/power', { method: 'POST' }).then(() => {
-      this.setState({
-        pressed: true
-      });
-      setTimeout(() => {
-        this.setState({
-          pressed: false
-        });
-      }, AUTO_RELEASE);
-    });
+  static handlePress() {
+    fetch('/power', { method: 'POST' });
   }
-  handleRelease = this.handleRelease.bind(this);
-  handleRelease() {
-    if (this.state.pressed) {
-      fetch('/power', { method: 'DELETE' }).then(() => {
-        this.setState({
-          pressed: false
-        });
-      });
-    }
+  static handleRelease() {
+    fetch('/power', { method: 'DELETE' });
   }
   render() {
-    const { pressed } = this.state;
-    const { style } = this.context;
-
     return (
       <div
         style={{
@@ -44,26 +17,12 @@ export default class Power extends Component {
           justifyContent: 'center'
         }}
       >
-        <div
-          onTouchStart={this.handlePress}
-          onMouseDown={this.handlePress}
-          onTouchEnd={this.handleRelease}
-          onMouseUp={this.handleRelease}
-          style={{
-            position: 'releative',
-            height: '350px',
-            width: '350px',
-            borderRadius: '50%',
-            backgroundColor: pressed ? Color(style.secondary).darken(0.2).rgbaString() : style.secondary,
-            border: `2px solid ${Color(style.secondary).darken(0.4).rgbaString()}`,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            color: style.primary
-          }}
+        <Button
+          onPress={Power.handlePress}
+          onRelease={Power.handleRelease}
         >
           <PowerIcon style={{ height: '100px', width: '100px' }} />
-        </div>
+        </Button>
       </div>
     );
   }

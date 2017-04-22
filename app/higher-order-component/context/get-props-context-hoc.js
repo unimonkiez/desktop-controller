@@ -2,7 +2,7 @@ import { Component, createElement } from 'react';
 import hoistStatics from 'hoist-non-react-statics';
 
 export default (contextTypes, contextObjectMapFn) => (contextMapFn, options = {}) => {
-  const { withRef = false, mapFnForProperty = {} } = options;
+  const { withRef = false } = options;
   return WrappedComponent => {
     class ReactPropsContextWrapper extends Component {
       static contextTypes = contextTypes;
@@ -23,10 +23,6 @@ export default (contextTypes, contextObjectMapFn) => (contextMapFn, options = {}
           ...contextPropsToMerge,
           ...this.props
         };
-
-        Object.keys(mapFnForProperty).forEach(propertyName => {
-          props[propertyName] = mapFnForProperty[propertyName](contextPropsToMerge[propertyName], this.props[propertyName]);
-        });
 
         return createElement(WrappedComponent, {
           ...props,

@@ -3,21 +3,12 @@ import Color from 'color';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import injectTapEventPlugin from 'react-tap-event-plugin';
-import Tabs from '../component/tabs.jsx';
+import Main from 'app/container/main.jsx';
+import Provider from 'app/container/provider.js';
 
 injectTapEventPlugin(); // Needed for onTouchTap
 
 export default class App extends Component {
-  static childContextTypes = {
-    style: PropTypes.object
-  };
-  getChildContext() {
-    const { style } = this.props;
-
-    return {
-      style
-    };
-  }
   render() {
     const { activatedFeatures } = this.props;
     const { primary, secondary } = this.props.style;
@@ -35,11 +26,16 @@ export default class App extends Component {
     });
 
     return (
-      <div style={{ color: secondaryColor.rgbaString() }}>
+      <Provider
+        primaryColor={primary}
+        secondaryColor={secondary}
+      >
         <MuiThemeProvider muiTheme={theme}>
-          <Tabs activatedFeatures={activatedFeatures} />
+          <Main
+            activatedFeatures={activatedFeatures}
+          />
         </MuiThemeProvider>
-      </div>
+      </Provider>
     );
   }
 
