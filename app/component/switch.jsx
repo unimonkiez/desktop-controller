@@ -25,14 +25,29 @@ class Switch extends Component {
           color: textColor
         }}
       >
+        <span
+          className={switchStyle.on}
+        >
+          ON
+        </span>
+        <span className={switchStyle.space} />
+        <span
+          className={switchStyle.off}
+        >
+          OFF
+        </span>
         <input
           className={switchStyle.input}
           checked={checked}
           onChange={() => this.handleToggle(!checked)}
           type="checkbox"
         />
-        <span className={switchStyle.strip}>
-          {children}
+        <span className={switchStyle.button}>
+          <span className={switchStyle['button-details-1']} />
+          <span className={switchStyle['button-content']}>
+            {children}
+          </span>
+          <span className={switchStyle['button-details-2']} />
         </span>
       </label>
     );

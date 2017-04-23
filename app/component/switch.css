@@ -1,9 +1,81 @@
+:local(.main) {
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  border-radius: 10px;
+	background-clip: padding-box;
+	background-color: #111;
+	box-shadow: 1px 1px 0 rgba(255,255,255,.25);
+}
+:local(.main):hover :local(.off) {
+  color: #2993e6;
+}
+:local(.main):hover :local(.on) {
+  color: #d50c63;
+}
+:local(.on), :local(.off) {
+  color: gray;
+  font-size: 25px;
+  padding: 8px;
+  font-weight: 600;
+}
+:local(.space) {
+  flex: 1 1;
+}
+:local(.on) {
+  left: 0;
+}
+:local(.off) {
+  right: 0;
+}
+:local(.input) {
+  display: none;
+}
+:local(.button) {
+  height: 100%;
+  position: absolute;
+  left: 2px;
+  top: 2px;
+  display: inline-block;
+  margin-left: 2px;
+  pointer-events: all;
+  cursor: pointer;
+  border-radius: 10px;
+  background-clip: padding-box;
+  background-color: #776f6b;
+  background-image: linear-gradient(0deg, #615957 0%, #837b75 19.78%, #736d69 30.44%, #736d69 69.56%, #fdf3eb 89.77%, #aba19b 100%);
+  box-shadow: 0px 5px 8px rgba(0, 0, 0, 0.75), 0 30px 20px -20px rgba(0, 0, 0, 0.75), 0 50px 40px -25px rgba(0, 0, 0, 0.75);
+  transition: tranform 0.3s ease-in;
+  will-change: tranform;
+}
+:local(.input):checked + * {
+  left: initial;
+  right: 2px;
+}
+:local(.button-details-1) {
 
-:local(.input){
+}
+:local(.button-details-2) {
+
+}
+:local(.button-content) {
+  min-width: 50px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+:local(.input-2) {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance:none /*remove default appearance */}
-:local(.main) {
+:local(.main-2) {
   width: 180px;
   height: 60px;
   margin:0 auto;
@@ -16,19 +88,19 @@
 	background-color: #111;
 	box-shadow: 1px 1px 0 rgba(255,255,255,.25);
 }
-:local(.main):before,
-:local(.main):after{
+:local(.main-2):before,
+:local(.main-2):after{
 position: absolute;
 line-height: 64px;
 font-size: 25px;
 font-weight: 600;
 z-index: 0;
 }
-:local(.main):before{content: "ON";float: left;left: 15px;}
-:local(.main):after{content: "OFF";float: right;right: 15px;}
-:local(.main):hover:before{color: #2993e6;}
-:local(.main):hover:after{color: #d50c63;}
-:local(.input) {
+:local(.main-2):before{content: "ON";float: left;left: 15px;}
+:local(.main-2):after{content: "OFF";float: right;right: 15px;}
+:local(.main-2):hover:before{color: #2993e6;}
+:local(.main-2):hover:after{color: #d50c63;}
+:local(.input-2) {
 	width: 100px;
 	height: 56px;
 	margin-top: 2px;
@@ -47,17 +119,17 @@ z-index: 0;
     0 50px 40px -25px rgba(0, 0, 0, 0.75);
 transition: margin 0.3s ease-in;
 }
-:local(.input):checked{
+:local(.input-2):checked{
 margin-left: 78px;
 transition: margin 0.3s ease-out;
 }
-:local(.input):before,:local(.input):after{
+:local(.input-2):before,:local(.input-2):after{
 content: "";
 position: absolute;
 display: inline-block;
 margin-top: 1px;
 }
-:local(.input):before {
+:local(.input-2):before {
 	width: 37px;
 	height: 54px;
 	margin-left: 1px;
@@ -68,7 +140,7 @@ margin-top: 1px;
 	box-shadow: 1px 0 0 rgba(255,255,248,.7);
 	background-image: linear-gradient(0deg, #978f8d 0%, #817d79 46.44%, #a39b97 100%);
 }
-:local(.input):after {
+:local(.input-2):after {
 	width: 41px;
 	height: 54px;
 	float: right;
@@ -80,7 +152,7 @@ margin-top: 1px;
 	background-color: #877f7d;
 	background-image: linear-gradient(0deg, #5b5755 0%, #696561 18.68%, #857f7d 50%, #9b9793 98.22%, #7d7979 100%);
 }
-:local(.strip){
+:local(.strip-2){
 position: absolute;
 z-index: 10;
 display: inline-block;
@@ -89,8 +161,8 @@ margin-left: -88px;
 margin-top: 21px;
 opacity: 0.55;
 }
-:local(.strip):before,
-:local(.strip):after{
+:local(.strip-2):before,
+:local(.strip-2):after{
 content:"";
 height:18px;
 position: absolute;
@@ -102,7 +174,7 @@ box-shadow: -1px 0 0 rgba(255,255,255,0.75),
     3px 0 0 rgba(255,255,255,0.75),
     -3px 0 0 black,
     -4px 0 0 rgba(255,255,255,0.75)}
-:local(.strip):before{float: left;left: 0}
-:local(.strip):after{float: right;right: 0}
+:local(.strip-2):before{float: left;left: 0}
+:local(.strip-2):after{float: right;right: 0}
 /* Promote */
 img,p{margin:0 ;text-align:center}
