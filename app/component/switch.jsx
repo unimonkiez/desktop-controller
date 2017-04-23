@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Toggle from 'material-ui/Toggle';
 import { Hoc as ContextHoc } from 'app/container/provider.js';
 import Color from 'color';
+import switchStyle from './switch.css';
 
 class Switch extends Component {
   handleToggle(checked) {
@@ -19,14 +19,22 @@ class Switch extends Component {
     } = this.props;
 
     return (
-      <div>
-        <Toggle
-          toggled={checked}
-          onToggle={() => { this.handleToggle(!checked); }}
-          labelStyle={{ color: textColor }}
+      <label
+        className={switchStyle.main}
+        style={{
+          color: textColor
+        }}
+      >
+        <input
+          className={switchStyle.input}
+          checked={checked}
+          onChange={() => this.handleToggle(!checked)}
+          type="checkbox"
         />
-        {children}
-      </div>
+        <span className={switchStyle.strip}>
+          {children}
+        </span>
+      </label>
     );
   }
 }

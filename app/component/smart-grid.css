@@ -1,0 +1,8 @@
+:local(.main) {
+  flex-direction: row;
+}
+@media only screen and (orientation: portrait) {
+  :local(.main) {
+    flex-direction: column;
+  }
+}

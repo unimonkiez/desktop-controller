@@ -37,31 +37,23 @@ class Button extends Component {
 
     return (
       <div
+        onTouchStart={this.handlePress}
+        onMouseDown={this.handlePress}
+        onTouchEnd={this.handleRelease}
+        onMouseUp={this.handleRelease}
         style={{
+          position: 'releative',
+          height: '100%',
+          backgroundColor: pressed ? backgroundColor : pressedBackgroudColor,
+          border: `2px solid ${borderColor}`,
           display: 'flex',
-          justifyContent: 'center'
+          alignItems: 'center',
+          justifyContent: 'center',
+          color: textColor,
+          boxSizing: 'border-box'
         }}
       >
-        <div
-          onTouchStart={this.handlePress}
-          onMouseDown={this.handlePress}
-          onTouchEnd={this.handleRelease}
-          onMouseUp={this.handleRelease}
-          style={{
-            position: 'releative',
-            height: '350px',
-            width: '350px',
-            borderRadius: '50%',
-            backgroundColor: pressed ? backgroundColor : pressedBackgroudColor,
-            border: `2px solid ${borderColor}`,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            color: textColor
-          }}
-        >
-          { children }
-        </div>
+        { children }
       </div>
     );
   }

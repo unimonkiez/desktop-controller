@@ -11,19 +11,12 @@ export default class Power extends Component {
   }
   render() {
     return (
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'center'
-        }}
+      <Button
+        onPress={Power.handlePress}
+        onRelease={Power.handleRelease}
       >
-        <Button
-          onPress={Power.handlePress}
-          onRelease={Power.handleRelease}
-        >
-          <PowerIcon style={{ height: '100px', width: '100px' }} />
-        </Button>
-      </div>
+        <PowerIcon style={{ height: '100px', width: '100px' }} />
+      </Button>
     );
   }
 }

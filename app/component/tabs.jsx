@@ -4,13 +4,13 @@ import PowerIcon from 'material-ui/svg-icons/action/power-settings-new';
 import LightIcon from 'material-ui/svg-icons/action/invert-colors';
 import WifiIcon from 'material-ui/svg-icons/action/settings-input-antenna';
 import UpdateIcon from 'material-ui/svg-icons/action/autorenew';
-import Tab from './tab.jsx';
-import Power from './power.jsx';
-import Reset from './reset.jsx';
-import UvLight from './uv-light.jsx';
-import Led from './led.jsx';
-import Wifi from './wifi.jsx';
-import Update from './update.jsx';
+import Tab from 'app/component/tab.jsx';
+import Power from 'app/container/power.jsx';
+import Reset from 'app/container/reset.jsx';
+import UvLight from 'app/container/uv-light.jsx';
+import Led from 'app/container/led.jsx';
+import Wifi from 'app/container/wifi.jsx';
+import Update from 'app/container/update.jsx';
 
 export default class Tabs extends Component {
   state = {

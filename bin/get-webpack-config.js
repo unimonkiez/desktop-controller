@@ -49,8 +49,7 @@ module.exports = ({
     })
   ]
   .concat(isWebpackDevServer ? [
-    new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoErrorsPlugin()
+    new webpack.HotModuleReplacementPlugin()
   ] : [])
   .concat(isProd ? [
     new webpack.optimize.UglifyJsPlugin({
@@ -100,9 +99,6 @@ module.exports = ({
         test: /\.css$/,
         use: ExtractTextPlugin.extract({
           use: [
-            {
-              loader: 'to-string-loader'
-            },
             {
               loader: 'css-loader'
             }

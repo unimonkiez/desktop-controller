@@ -11,19 +11,12 @@ export default class Reset extends Component {
   }
   render() {
     return (
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'center'
-        }}
+      <Button
+        onPress={Reset.handlePress}
+        onRelease={Reset.handleRelease}
       >
-        <Button
-          onPress={Reset.handlePress}
-          onRelease={Reset.handleRelease}
-        >
-          <ResetIcon style={{ height: '100px', width: '100px' }} />
-        </Button>
-      </div>
+        <ResetIcon style={{ height: '100px', width: '100px' }} />
+      </Button>
     );
   }
 }
