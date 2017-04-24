@@ -11,6 +11,7 @@ export default class SmartGrid extends Component {
     return (
       <div
         style={{
+          display: 'flex',
           flex: `1 1 ${(index === 0 && childrenCount % 2 !== 0) ? 100 : 50}%`
         }}
       >
@@ -27,7 +28,7 @@ export default class SmartGrid extends Component {
       <div
         className={smartGridStyle.main}
         style={{
-          height: '100%',
+          flex: '1 1',
           display: 'flex',
           justifyContent: 'center',
           flexWrap: 'wrap'

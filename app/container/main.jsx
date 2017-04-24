@@ -49,7 +49,8 @@ const Component = (
     </div>
     <div
       style={{
-        flex: '1 1'
+        flex: '1 1',
+        display: 'flex'
       }}
     >
       <SmartGrid>

@@ -39,7 +39,8 @@ class Panel extends Component {
       <div
         style={{
           border: `1px solid ${borderColor}`,
-          height: '100%',
+          flex: '1 1',
+          display: 'flex',
           boxSizing: 'border-box',
           position: 'relative',
           padding: `${Panel.screwSize + (Panel.screwPadding * 2)}px`

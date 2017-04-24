@@ -81,7 +81,8 @@ export default class Led extends Component {
     return (
       <div
         style={{
-          height: '100%'
+          display: 'flex',
+          flex: '1 1'
         }}
       >
         <Switch

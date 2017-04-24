@@ -43,7 +43,7 @@ class Button extends Component {
         onMouseUp={this.handleRelease}
         style={{
           position: 'releative',
-          height: '100%',
+          flex: '1 1',
           backgroundColor: pressed ? backgroundColor : pressedBackgroudColor,
           border: `2px solid ${borderColor}`,
           display: 'flex',
