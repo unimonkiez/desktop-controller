@@ -1,10 +1,12 @@
 [![Build Status](https://travis-ci.org/unimonkiez/desktop-controller.svg?branch=master)](https://travis-ci.org/unimonkiez/desktop-controller)
 # Desktop controller
 
+## Demo - click the image to try it
+[<img src="https://raw.githubusercontent.com/unimonkiez/desktop-controller/gh-pages/resource/demo.png" width="300" />](http://unimonkiez.github.io/desktop-controller/)
+
 ## Installation
 1. Install NodeJS on your raspberry.
-2. (Optional) install yarn by running `sudo npm install -g yarn`.
-3. install the application by running `sudo npm install -g desktop-controller` or `sudo yarn global add desktop-controller`.
+2. install the application by running `sudo npm install -g desktop-controller` or `sudo yarn global add desktop-controller` if you use yarn.
 
 ## Usage
 to run the server simply run `sudo desktop-controller [options]`.  
