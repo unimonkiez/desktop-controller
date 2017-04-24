@@ -1,26 +1,18 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import Color from 'color';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import injectTapEventPlugin from 'react-tap-event-plugin';
-import Tabs from '../component/tabs.jsx';
+import Main from 'app/container/main.jsx';
+import Provider from 'app/container/provider.js';
 
 injectTapEventPlugin(); // Needed for onTouchTap
 
 export default class App extends Component {
-  static childContextTypes = {
-    style: PropTypes.object
-  };
-  getChildContext() {
-    const { style } = this.props;
-
-    return {
-      style
-    };
-  }
   render() {
-    const { activatedFeatures } = this.props;
-    const { primary, secondary } = this.props.style;
+    const { style, ...otherProps } = this.props;
+    const { primary, secondary } = style;
 
     const primaryColor = Color(primary);
     const secondaryColor = Color(secondary);
@@ -35,11 +27,14 @@ export default class App extends Component {
     });
 
     return (
-      <div style={{ color: secondaryColor.rgbaString() }}>
+      <Provider
+        primaryColor={primary}
+        secondaryColor={secondary}
+      >
         <MuiThemeProvider muiTheme={theme}>
-          <Tabs activatedFeatures={activatedFeatures} />
+          <Main {...otherProps} />
         </MuiThemeProvider>
-      </div>
+      </Provider>
     );
   }
 
@@ -49,7 +44,6 @@ if (__DEV__) {
     style: PropTypes.shape({
       primary: PropTypes.string.isRequired,
       secondary: PropTypes.string.isRequired
-    }).isRequired,
-    activatedFeatures: PropTypes.arrayOf(PropTypes.number).isRequired
+    }).isRequired
   };
 }

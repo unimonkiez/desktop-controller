@@ -1,0 +1,90 @@
+:local(.main) {
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  border-radius: 10px;
+	background-clip: padding-box;
+	background-color: #111;
+	box-shadow: 1px 1px 0 rgba(255,255,255,.25);
+}
+:local(.main):hover :local(.off) {
+  color: #2993e6;
+}
+:local(.main):hover :local(.on) {
+  color: #d50c63;
+}
+:local(.on), :local(.off) {
+  color: gray;
+  font-size: 25px;
+  padding: 8px;
+  font-weight: 600;
+}
+:local(.space) {
+  flex: 1 1;
+}
+:local(.on) {
+  left: 0;
+}
+:local(.off) {
+  right: 0;
+}
+:local(.input) {
+  display: none;
+}
+:local(.button) {
+  height: 100%;
+  position: absolute;
+  left: 2px;
+  top: 2px;
+  display: flex;
+  margin-left: 2px;
+  pointer-events: all;
+  cursor: pointer;
+  border-radius: 10px;
+  background-clip: padding-box;
+  background-color: #776f6b;
+  background-image: linear-gradient(0deg, #615957 0%, #837b75 19.78%, #736d69 30.44%, #736d69 69.56%, #fdf3eb 89.77%, #aba19b 100%);
+  box-shadow: 0px 5px 8px rgba(0, 0, 0, 0.75), 0 30px 20px -20px rgba(0, 0, 0, 0.75), 0 50px 40px -25px rgba(0, 0, 0, 0.75);
+  transition: tranform 0.3s ease-in;
+  will-change: tranform;
+}
+:local(.input):checked + * {
+  left: initial;
+  right: 2px;
+}
+:local(.button-details-1), :local(.button-details-2) {
+  position: relative;
+  width: 28px;
+  background-clip: padding-box;
+  background-color: #857f7d;
+}
+:local(.button-details-1):before, :local(.button-details-2):before {
+  content: "";
+  height: 50px;
+  top: calc(50% - 25px);
+  left: 14px;
+  position: absolute;
+  display: inline-block;
+  width: 1px;
+  background: black;
+  box-shadow: -1px 0 0 rgba(255,255,255,0.75), 4px 0 0 black, 3px 0 0 rgba(255,255,255,0.75), -3px 0 0 black, -4px 0 0 rgba(255,255,255,0.75);
+}
+:local(.button-details-1) {
+  border-radius: 10px 14px 14px 10px;
+  box-shadow: 1px 0 0 rgba(255,255,248,.7);
+  background-image: linear-gradient(0deg, #978f8d 0%, #817d79 46.44%, #a39b97 100%);
+}
+:local(.button-details-2) {
+  border-radius: 13px 10px 10px 13px;
+  background-image: linear-gradient(0deg, #5b5755 0%, #696561 18.68%, #857f7d 50%, #9b9793 98.22%, #7d7979 100%);
+}
+:local(.button-content) {
+  min-width: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
