@@ -15,7 +15,7 @@ export default class Power extends Component {
         onPress={Power.handlePress}
         onRelease={Power.handleRelease}
       >
-        <PowerIcon style={{ height: '100px', width: '100px' }} />
+        <PowerIcon style={{ height: 'auto', width: '4rem' }} />
       </Button>
     );
   }

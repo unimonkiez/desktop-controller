@@ -8,17 +8,19 @@ import SmartGrid from 'app/component/smart-grid.jsx';
 import Title from 'app/component/title.jsx';
 import Panel from 'app/component/panel.jsx';
 
-const renderFeature = feature => {
+const renderFeature = (feature, status) => {
   const FeatureComponent = featureComponentMap[feature];
+  const featureStatus = status[feature];
   return (
     <Panel key={feature}>
-      <FeatureComponent />
+      <FeatureComponent defaultStatus={featureStatus} />
     </Panel>
   );
 };
 
 const Component = (
   {
+    status,
     textColor,
     backgroundColor,
     activatedFeatures
@@ -54,7 +56,7 @@ const Component = (
         {
           featurePriority
           .filter(feature => activatedFeatures.indexOf(feature) !== -1)
-          .map(renderFeature)
+          .map(feature => renderFeature(feature, status))
         }
       </SmartGrid>
     </div>
@@ -64,6 +66,7 @@ const Component = (
 if (__DEV__) {
   Component.propTypes = {
     activatedFeatures: PropTypes.arrayOf(PropTypes.number).isRequired,
+    status: PropTypes.shape({}).isRequired,
     textColor: PropTypes.string,
     backgroundColor: PropTypes.string
   };

@@ -15,7 +15,7 @@ export default class Reset extends Component {
         onPress={Reset.handlePress}
         onRelease={Reset.handleRelease}
       >
-        <ResetIcon style={{ height: '100px', width: '100px' }} />
+        <ResetIcon style={{ height: 'auto', width: '4rem' }} />
       </Button>
     );
   }

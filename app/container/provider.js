@@ -1,5 +1,5 @@
 import createProviderAndHoc from 'app/higher-order-component/context/create-provider-and-hoc.js';
-import { PropTypes } from 'react';
+import PropTypes from 'prop-types';
 
 const {
   Provider,

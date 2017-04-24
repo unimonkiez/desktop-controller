@@ -1,5 +1,6 @@
 import uuid from 'uuid/v4';
-import { Component, PropTypes } from 'react';
+import { Component } from 'react';
+import PropTypes from 'prop-types';
 import getPropsContextHoc from './get-props-context-hoc.js';
 
 export default contextTypesObj => {

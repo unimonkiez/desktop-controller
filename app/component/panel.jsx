@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Hoc as ContextHoc } from 'app/container/provider.js';
+import Color from 'color';
 import PanelScrew from './panel-screw.jsx';
 
-export default class Panel extends Component {
+class Panel extends Component {
   static screwPadding = 4;
   static screwSize = 18;
   static renderScrew({
@@ -29,13 +31,14 @@ export default class Panel extends Component {
   }
   render() {
     const {
-      children
+      children,
+      borderColor
     } = this.props;
 
     return (
       <div
         style={{
-          border: '1px solid green',
+          border: `1px solid ${borderColor}`,
           height: '100%',
           boxSizing: 'border-box',
           position: 'relative',
@@ -54,6 +57,10 @@ export default class Panel extends Component {
 
 if (__DEV__) {
   Panel.propTypes = {
+    borderColor: PropTypes.string,
     children: PropTypes.node
   };
 }
+export default ContextHoc(ctx => ({
+  borderColor: Color(ctx.secondaryColor).darken(0.2).rgbaString()
+}))(Panel);
