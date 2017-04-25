@@ -13,8 +13,7 @@ export default class Wifi extends Component {
   handleCheckedChange(on) {
     if (!this.inProcess) {
       this.inProcess = true;
-      fetch('/wifi', { method: on ? 'POST' : 'DELETE' })
-      .then(fetchHandler)
+      Promise.resolve()
       .then(() => {
         this.setState({ on }, () => {
           this.inProcess = undefined;

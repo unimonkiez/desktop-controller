@@ -43,8 +43,7 @@ export default class Led extends Component {
     if (!this.inProcess) {
       this.inProcess = true;
       const { color } = this.state;
-      fetch(`/led${on ? `/${color}` : ''}`, { method: on ? 'POST' : 'DELETE' })
-      .then(fetchHandler)
+      Promise.resolve()
       .then(() => {
         this.setState({ on }, () => {
           this.inProcess = undefined;
@@ -56,8 +55,7 @@ export default class Led extends Component {
     if (!this.inProcess && this.state.on) {
       const color = Color(hex).rgbaString();
       this.inProcess = true;
-      fetch(`/led/${color}`, { method: 'PUT' })
-      .then(fetchHandler)
+      Promise.resolve()
       .then(() => {
         this.setState({ color }, () => {
           this.inProcess = undefined;

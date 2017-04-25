@@ -13,8 +13,7 @@ export default class UvLight extends Component {
   handleCheckedChange(on) {
     if (!this.inProcess) {
       this.inProcess = true;
-      fetch('/uv', { method: on ? 'POST' : 'DELETE' })
-      .then(fetchHandler)
+      Promise.resolve()
       .then(() => {
         this.setState({ on }, () => {
           this.inProcess = undefined;

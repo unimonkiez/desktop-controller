@@ -4,10 +4,8 @@ import Button from 'app/component/button.jsx';
 
 export default class Reset extends Component {
   static handlePress() {
-    fetch('/reset', { method: 'POST' });
   }
   static handleRelease() {
-    fetch('/reset', { method: 'DELETE' });
   }
   render() {
     return (
