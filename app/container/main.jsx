@@ -37,19 +37,24 @@ const Component = (
       bottom: '0',
       left: '0',
       display: 'flex',
-      flexDirection: 'column'
+      flexDirection: 'column',
+      userSelect: 'none',
+      MozUserSelect: 'none',
+      WebkitUserSelect: 'none',
+      msUserSelect: 'none',
+      WebkitOverflowScrolling: 'touch'
     }}
   >
     <div
       style={{
-        flex: '0 0'
+        flex: '0 0 auto'
       }}
     >
       <Title />
     </div>
     <div
       style={{
-        flex: '1 1',
+        flex: '1 1 auto',
         display: 'flex'
       }}
     >
