@@ -1,6 +1,5 @@
 ._2UVDAAFN468gYqGF3sW5AV {
-  width: 100%;
-  height: 100%;
+  flex: 1 1;
   cursor: pointer;
   display: flex;
   justify-content: space-between;
@@ -36,12 +35,10 @@
   display: none;
 }
 ._2-fAIOkNhmudyEYfMKjBSk {
-  height: 100%;
+  height: calc(100% - 4px);
   position: absolute;
-  left: 2px;
   top: 2px;
   display: flex;
-  margin-left: 2px;
   pointer-events: all;
   cursor: pointer;
   border-radius: 10px;
@@ -49,12 +46,12 @@
   background-color: #776f6b;
   background-image: linear-gradient(0deg, #615957 0%, #837b75 19.78%, #736d69 30.44%, #736d69 69.56%, #fdf3eb 89.77%, #aba19b 100%);
   box-shadow: 0px 5px 8px rgba(0, 0, 0, 0.75), 0 30px 20px -20px rgba(0, 0, 0, 0.75), 0 50px 40px -25px rgba(0, 0, 0, 0.75);
-  transition: tranform 0.3s ease-in;
-  will-change: tranform;
+  left: 2px;
+  transition: all 0.3s ease-in;
+  will-change: left;
 }
 ._3a7Jbke7vB2QkJUujI9xSD:checked + * {
-  left: initial;
-  right: 2px;
+  left: calc(100% - 2px - 106px);
 }
 ._3-tdFR8UIRjBje4BBlU_s2, ._2YSy_vImsBPcojk7xhIiaG {
   position: relative;
@@ -83,7 +80,7 @@
   background-image: linear-gradient(0deg, #5b5755 0%, #696561 18.68%, #857f7d 50%, #9b9793 98.22%, #7d7979 100%);
 }
 ._2pfjthtJEagjOGzbGoX5m5 {
-  min-width: 50px;
+  width: 50px;
   display: flex;
   align-items: center;
   justify-content: center;
